@@ -10,6 +10,8 @@ interface Calendar {
 }
 interface Days {
   day: number;
+  event: boolean;
+  id_event?: string;
 }
 
 export const Calendar = () => {
@@ -25,9 +27,11 @@ export const Calendar = () => {
     const days = [...Array(daysOfMonth).keys()].map(dayKey => {
       const day = dayKey + 1;
       return {
+        event:false,
         day,
       }
     })
+
     let startsOn = new Date(currentYear, monthKey, 1).getDay();
     startsOn === 0 ? startsOn = 7 : startsOn;
 
@@ -58,11 +62,12 @@ export const Calendar = () => {
   }
   
   const setDates = () =>{
+    console.log(dates);
       const fecha=dates.map(d=>{
-        return [parseInt(d.fecha.split('/')[0]),parseInt(d.fecha.split('/')[1]),parseInt(d.fecha.split('/')[2])]
+        return d.fecha.split('/').map(f=>parseInt(f))
       })
       console.log(fecha);
-      setFecha(fecha);
+      // setFecha(fecha);
       // const estilos=fecha.map(d => {
       //   // console.log(d[0],d[1],d[2]);
       //   return (d[0] === day && d[1] === date.monthKey && d[2]===date.currentYear) ? 'bg-purple-400' : ''
@@ -73,8 +78,9 @@ export const Calendar = () => {
   useEffect(() => {
     setDates();
     setDays(calendar);
+    // console.log(calendar,'calendario');
+    // console.log(days,'days');
     // console.log(calendar);
-    // console.log(weekDaysNames);
     // setDays(calendar);
   }, [currentYear,dates])
 
@@ -87,7 +93,7 @@ export const Calendar = () => {
       <h1 className='text-3xl font-bold z-10'>Calendario {currentYear}</h1>
       <div className="grid grid-cols-cards gap-3">
         {
-          calendar.map((date, i) => {
+          days.map((date, i) => {
             return (
               <div key={i}>
                 <h2 className='text-2xl font-bold capitalize'>{date.month}</h2>
@@ -104,7 +110,7 @@ export const Calendar = () => {
                       return (
                         <div
                           key={i}
-                          className={`calendar ${currentDate(date,i)}`}
+                          className={`calendar ${currentDate(date,i)} `}
                           style={{ gridColumnStart: `${i === 0 ? date.startsOn : ''}` }}
                           ref={calendarRef}
                           onClick={() => showDate(date, i)}

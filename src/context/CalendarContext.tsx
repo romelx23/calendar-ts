@@ -20,7 +20,7 @@ interface CalendarContext {
     setCurrentDay: (day: number) => void;
     setCurrentMonth: (month: number) => void;
     setYear: Dispatch<React.SetStateAction<number>>;
-    setDays: (days: Calendar[]) => void;
+    setDays: Dispatch<React.SetStateAction<Calendar[]>>;
     setCurrentYear: (year: number) => void;
     setLocale: (locale: string) => void;
     setMoths: (moths: number[]) => void;
@@ -36,9 +36,12 @@ interface Calendar {
 }
 interface Days {
     day: number;
+    event: boolean;
+    id_event?: string;
 }
 
 interface Form {
+    id:string;
     tarea: string;
     fecha: string;
     prioridad: string;
@@ -108,8 +111,8 @@ export const CalendarProvider:FC = ({children})=>{
             setCurrentDate: () => { },
             setCurrentDay: () => { },
             setCurrentMonth: () => { },
-            setYear: () => { },
-            setDays: () => { },
+            setYear,
+            setDays,
             setCurrentYear: () => { },
             setLocale: () => { },
             setMoths: () => { },
